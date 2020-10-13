@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+
+{% block content %}
+<div id="resister">
+    <h3 class="text-center text-white pt-5"></h3>
+    <div class="container">
+        <div id="resister-row" class="row justify-content-center align-items-center bg-light shadow-sm p-3 mb-5 bg-light rounded">
+            <div id="resister-column" class="col-md-6">
+                <div id="resister-box" class="col-md-12">
+                    <form id="login-form" class="form" action="" method="post">
+                        {{ form.hidden_tag() }}
+                        <h3 class="text-center text-info">Resister Now</h3>
+                        <div class="form-group">
+                            {{form.username.label(class="text-info")}}
+                            {% if form.username.errors %}
+                            {{form.username(class="form-control is-invalid")}}
+                            <div class="invalid-feedback">
+                                {% for error in form.username.errors %}
+                                    <span>{{error}}</span>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                                {{form.username(class='form-control')}}
+                            {% endif %}
+
+                        </div>
+                        <div class="form-group">
+                            {{form.email.label(class="text-info")}}
+                            {% if form.email.errors %}
+                            {{form.email(class="form-control is-invalid")}}
+                            <div class="invalid-feedback">
+                                {% for error in form.email.errors %}
+                                    <span>{{error}}</span>
+                                {% endfor %}
+                            </div>
+                           {% else %}
+                            {{form.email(class="form-control")}}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{form.password.label(class="text-info")}}
+                            {% if form.password.errors %}
+                            {{form.password(class="form-control is-invalid" )}}
+                            <div class="invalid-feedback">
+                                {% for error in form.password.errors %}
+                                    <span>{{error}}</span>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{form.password(class="form-control")}}
+                            {% endif %}                            
+                        </div>
+                        <div class="form-group">
+                            {{form.confirm_password.label(class="text-info")}}
+                            {% if form.confirm_password.errors %}
+                            {{form.confirm_password(class="form-control is-invalid")}}
+                            <div class="invalid-feedback">
+                               {% for error in form.confirm_password.errors %}
+                                   <span>{{error}}</span>
+                               {% endfor %}
+                            </div>
+                            {% else %}
+                            {{form.confirm_password(class="form-control")}}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{form.submit(class="btn btn-info")}}
+                        </div>
+                        <div id="register-link" class="text-right">
+                            <a href="{{url_for('login')}}" class="btn btn-outline-info">Login here</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
