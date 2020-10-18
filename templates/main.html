@@ -9,51 +9,10 @@
   --red: #d64041;
 }
 
-.alert-message
-{
-    margin: 20px 0;
-    padding: 20px;
-    border-left: 3px solid #eee;
+body{
+  background:linear-gradient(to left, #000428 , #004e92);
+  
 }
-.alert-message h4
-{
-    margin-top: 0;
-    margin-bottom: 5px;
-}
-.alert-message p:last-child
-{
-    margin-bottom: 0;
-}
-.alert-message code
-{
-    background-color: #fff;
-    border-radius: 3px;
-}
-a,
-a:hover {
-  color: inherit;
-}
-
-a:hover {
-  text-decoration: none;
-}
-
-.bg-lightblue {
-  background: var(--lightblue);
-}
-
-.bg-red {
-  background: var(--red);
-}
-
-.text-red {
-  color: var(--red);
-}
-
-.container-fluid-max {
-  max-width: 1200px;
-}
-
 .cover {
   background: no-repeat center/cover;
   margin-top:auto;
@@ -97,6 +56,12 @@ a:hover {
 .content{
     font-family:serif;
     font-size: 18px;
+
+}
+#footer{
+  background-color:#d64041 ;
+  font-family:Lucida Calligraphy;
+  
 
 }
 
@@ -155,6 +120,22 @@ a:hover {
       width:100%;
       height:90%;
   }
+  #title{
+    font-weight: bold;
+    font-size: 20px;
+    font-family: serif;
+    line-height: 19px;
+    color:dimgrey
+
+  }
+  #content{
+    font-weight: lighter;
+    font-size: 16px;
+    line-height: 18px;
+    font-family: serif;
+
+  }
+
 }
 
 
@@ -188,61 +169,60 @@ $(".page-header .nav-link, .navbar-brand").on("click", function(e) {
 
 {% endblock %}
 {% block content%}
-
+<div class="container">
+  {{forms.hidden_tag()}}
+  {% with msg=get_flashed_messages() %}
+  {% if msg %}
+  {% for m in msg %}
+      <p class="text-light">{{m}}</p>
+      {% endfor%}
+  {% endif %}
+  {% endwith %}
 <section id="home" class="d-flex align-items-center position-relative vh-100 cover hero" style="background-image:url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/cappadocia.jpg);">
     <div class="container-fluid container-fluid-max">
       <div class="row">
         <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-          <h1 class="text-white">My bLOG</h1>
+          
           <div class="mt-3">
+            {% if current_user.is_authenticated %}
+          
+            <h1 class="text-light">{{current_user.username}}</h1>
+            {% else %}
+            <h1 class="text-white">My bLOG</h1>
             <a class="btn bg-red text-white mr-2" href="{{url_for('login')}}" role="button">login</a>
             <a class="btn bg-red text-white" href="{{url_for('resister')}}" role="button">resister now</a>
+          {% endif %}
           </div>
         </div>
       </div>
     </div>
   </section>
+  
   {% for p in post.items%}
-  <section id="featured-destinations" class="featured-destinations bg-lightblue ">
-    <div class="row no-gutters shadow-lg p-3 mb-5 bg-white rounded" id="action">
-      <div class="col-md-6">
-        <div class="p-15"">
-
-
-            <div class="alert-message alert-message-success">
-                <img class="d-inline rounded-circle img-thumbnail" src="{{url_for('static',filename='images/'+p.author.image_file)}}">
-                <h4>
-                    {{p.author.username}}</h4>
-                <p>
-                    <strong> 
-                        {{p.date_posted}}</strong>
-                           </p>
-            </div>
-
-
-
-
-
-          <h3 class="title">{{p.title}}</h3>
-          <p class="content"><strong></strong> {{p.content}}</p>
-          <a class="btn bg-red text-white" href="{{url_for('userposts',id=p.id)}}" role="button">Read More →</a>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="vh-100 cover""><img class="article-img" src="{{url_for('static',filename='post_images/'+p.picture)}}"></div>
-      </div>
-    
-  </section>
-  {% endfor %}
-  <div class="section text-center p-3">
+ 
+<div class="card mb-4">
+   <img class="card-img-top" src="{{url_for('static',filename='post_images/'+p.picture)}}" alt="Card image cap">
+   <div class="card-body">
+    <h2 class="card-title" id="title">{{p.title}}</h2>
+    <p class="card-text" id="content">{{p.content}}</p>
+    <a href="{{url_for('userposts',id=p.id)}}" class="btn btn-primary">Read More →</a>
+  </div>
+  <div class="card-footer text-muted">
+    Posted on : {{p.date_posted.strftime("%b-%d-%Y")}} By
+    <a href="#" class="text-danger">{{p.author.username}}</a>
+  </div>
+</div>
+{% endfor %}
+  </div>
+  <div class="section text-center">
     {% for page_num in post.iter_pages() %}
     {% if post.page==page_num %}
-    <a class="btn btn-danger btn" href="{{url_for('main',page=page_num)}}">{{page_num}}</a>
+    <a class="btn btn-light btn" href="{{url_for('main',page=page_num)}}">{{page_num}}</a>
     {% else %}
-    <a class="btn btn-outline-danger btn" href="{{url_for('main',page=page_num)}}">{{page_num}}</a>
+    <a class="btn btn-outline-light btn" href="{{url_for('main',page=page_num)}}">{{page_num}}</a>
     {% endif %}
     {% endfor %}
-    <hr class="primary">
+    <hr class="primary p-2 mb-5">
     </div>
 </section>
 </div>

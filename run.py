@@ -1,5 +1,5 @@
 from flask import Flask,render_template,flash,redirect,url_for,request
-from datetime import datetime
+from datetime import date
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from form import *
@@ -8,6 +8,8 @@ from passlib.hash import pbkdf2_sha256
 from PIL import Image
 import os
 import secrets
+
+
 
 
 app=Flask(__name__)
@@ -63,21 +65,25 @@ class user(db.Model,UserMixin):
         return f"user('{self.username}','{self.email}','{self.image_file}','{self.password}')"
 
 class posts(db.Model):
+    date=date.today()
     id=db.Column(db.Integer,primary_key=True)
     title=db.Column(db.Text,nullable=False)
     content=db.Column(db.Text,nullable=False)
-    date_posted=db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
+    date_posted=db.Column(db.DateTime,nullable=False,default=date)
     picture=db.Column(db.String(120),nullable=False,default='default.jpg')
     user_id=db.Column(db.Integer,db.ForeignKey('user.id'),nullable=True)
     def __repr__(self):
         return f"user('{self.title}','{self.date_posted}'),{self.picture}')"
 
-@app.route("/")
 
+@app.route("/")
+@login_required
 def main():
+    forms=login_forms()
     page=request.args.get('page',1,type=int)
     post=posts.query.order_by(posts.date_posted.desc()).paginate(page=page,per_page=5)
-    return render_template("main.html",post=post)
+    return render_template("main.html",post=post,forms=forms)
+
 
 @app.route("/resister",methods=['GET','POST'])
 def resister():
@@ -134,9 +140,12 @@ def profile():
         data=form.username.data
         current_user.username=form.username.data
         current_user.email=form.email.data
-        db.session.commit()
-        flash('account update successfully')
-        return redirect(url_for('profile'))
+        try:
+            db.session.commit()    
+            return redirect(url_for('profile'))
+        except Exception:
+            message="form is invalid"
+            return redirect(url_for('profile',message=message))
     elif request.method=="GET":
         form.username.data=current_user.username
         form.email.data=current_user.email
@@ -153,7 +162,9 @@ def post():
             picture=picture_fn
         flash("Post successfully!")
         title=form.title.data
+        title=title.title()
         content=form.content.data
+        content=content.title()
         entry=posts(title=title,content=content,author=current_user,picture=picture)
         db.session.add(entry)
         db.session.commit()
@@ -174,11 +185,14 @@ def update_post(id):
     form=post_form()
     if form.validate_on_submit():
         if form.picture.data:
-            picture_fn=save_picture_post(form.picture.data)
-            picture=picture_fn
-        post.title=form.title.data
-        post.content=form.content.data
-        post.picture=picture
+            picture=save_picture_post(form.picture.data)
+            post.picture=picture
+        title=form.title.data
+        title=title.title()
+        post.title=title
+        content=form.content.data
+        content=content.title()
+        post.content=content
         db.session.commit()
         return redirect(url_for('userposts',id=post.id))
     elif request.method=="GET":
@@ -195,6 +209,7 @@ def delete_post(id):
     db.session.delete(post)
     db.session.commit()
     return redirect(url_for('main'))
+    
 @app.route("/login_form")
 def login_form():
     form=resistration_form()

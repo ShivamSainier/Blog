@@ -10,7 +10,7 @@
 .login-block{
     background: #DE6262;  /* fallback for old browsers */
 background: -webkit-linear-gradient(to bottom, #FFB88C, #DE6262);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to bottom, #FFB88C, #DE6262); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+background: linear-gradient(to left, #000428 , #004e92); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 float:left;
 width:100%;
 padding : 50px 0;
@@ -44,14 +44,14 @@ padding : 50px 0;
         {{forms.hidden_tag()}}
         {% with msg=get_flashed_messages() %}
         {% if msg %}
-            {% for m in msg %}
+        {% for m in msg %}
             <p class="text-danger">{{m}}</p>
-            {% endfor %}
+            {% endfor%}
         {% endif %}
         {% endwith %}
   <div class="form-group">
 
-    {{forms.username.label(class="text-uppercase")}}
+    {{forms.username.label()}}
     {% if forms.username.errors %}
     {{forms.username(class="form-control is-invalid")}}
     <div class="invalid-feedback">
@@ -60,7 +60,7 @@ padding : 50px 0;
         {% endfor %}
     </div>
     {% else %}
-        {{forms.username(class='form-control')}}
+        {{forms.username(class='form-control form-control-sm')}}
     {% endif %}
     
   </div>
@@ -74,12 +74,15 @@ padding : 50px 0;
   <div class="form-group">
     {{forms.submit(class="btn btn-login float-right")}}
 </div>
+<div class="form-group">
+    <a href="{{url_for('resister')}}" class="btn btn-sm btn-primary">Resister</a>  
+</div></form>
   <div class="copy-text">Created with <i class="fa fa-heart"></i> by Shivam</div>
 		</div>
 		<div class="col-md-8 banner-sec">
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                  <ol class="carousel-indicators">
-                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" href= class="active"></li>
                     <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
                     <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
                   </ol>

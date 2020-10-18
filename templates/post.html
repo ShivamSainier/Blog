@@ -2,24 +2,16 @@
 {% block head %}
 <style>
     body{
-        background:linear-gradient(to bottom, #FFB88C, #DE6262); 
-    }
-#title{
-    font-weight: 800;
-font-size: 30px;
-color:#d64041;
-font-family:Lucida Calligraphy;
-}
-
-#content{
+    background:linear-gradient(to left, #000428 , #004e92);
     font-family:serif;
-    font-size: 18px;
-}
+    font-size: 20px;
+    }
 </style>
-
 {% endblock %}
 {% block content %}
+<div class="container bg-light p-2 rounded">
 <h2>posts</h2>
+
 <section class="section">
     <div class="content">
 <form method="post" action="" enctype="multipart/form-data">
@@ -33,14 +25,16 @@ font-family:Lucida Calligraphy;
         {{form.content(class="form-control")}}
     </div>
     <div class="form-group">
-        {{form.picture.label(class="btn btn-danger")}}
+        {{form.picture.label(class="btn btn-outline-secondary")}}
         {{form.picture()}}
     </div>
     <div class="form-group" id="submit">
-        {{form.submit(class="btn btn-danger btn-lg ml-3")}}
+        {{form.submit(class="btn btn-success")}}
     </div>
 </form>
 </div>
 </section>
+</div>
+
 {% endblock %}
 
