@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+  body{
+    background:linear-gradient(to left, #FFFFFF , #D7E1EC);
+  font-family:'Times New Roman', Times, serif;}
+
+  /* MEDIA QUERIES
+  –––––––––––––––––––––––––––––––––––––––––––––––––– *
+  /* MEDIUM SCREENS */
+  @media screen and (max-width: 991px) {
+    .page-header {
+      background: var(--red);
+    }
+  }
+  
+  /* SMALL SCREENS */
+  @media screen and (max-width: 767px) {
+    .page-footer .footer-child {
+      text-align: center;
+    }
+    .article-img{
+        width:100%;
+        height:90%;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Block Body-->
+
+  <div class="container bg-light p-4">
+  <section id="section">
+    {% if post.author==current_user %}
+      <a class="btn btn btn-primary text-light m-1" href="{{url_for('update_post',id=post.id)}}">Edit/Update</a>
+      <a type="button" class="btn btn-danger text-light m-1" data-toggle="modal" data-target="#deletemodel">
+        Delete
+      </a>    
+    {% endif %}   
+    <article class="media content-section">   
+      <div class="media-body">
+        <div class="article-metadata">
+          <h2>{{post.author.username}}</h2>
+            <br>
+          <p class="text-muted">{{post.date_posted.strftime('%Y-%m-%d')}}</p>   
+        </div>
+        <img class="article-img" src="{{url_for('static',filename='post_images/'+post.picture)}}">
+        <h2 class="title m-2">{{post.title}}</h2>
+        <p class="article-content m-2">{{post.content}}</p>
+      </div>
+  </section>
+    </article>
+  <!-- Button trigger modal -->
+  <!-- Modal -->
+  <div class="modal fade" id="deletemodel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete Post</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>{{post.title}}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+          <form method="post" action="{{url_for('delete_post',id=post.id)}}">
+            <input class="btn btn-sm btn-danger" type="submit" value="submit">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+{% endblock %}

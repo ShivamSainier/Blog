@@ -10,8 +10,6 @@ from sqlalchemy.exc import IntegrityError
 from PIL import Image
 
 
-
-
 def save_picture(form_picture):
     random_hex=secrets.token_hex(8)
     _,f_ext=os.path.splitext(form_picture.filename)
@@ -23,7 +21,6 @@ def save_picture(form_picture):
     i.save(picture_fn)
     i.save(picture_path)
     return picture_fn
-
 
 def save_picture_post(form_picture):
     random_hex=secrets.token_hex(8)
@@ -37,8 +34,6 @@ def save_picture_post(form_picture):
     i.save(picture_path)
     return picture_fn
 
-
-
 @app.route("/")
 @login_required
 def main():
@@ -46,7 +41,6 @@ def main():
     page=request.args.get('page',1,type=int)
     post=posts.query.order_by(posts.date_posted.desc()).paginate(page=page,per_page=5)
     return render_template("main.html",post=post,forms=forms)
-
 
 @app.route("/sign_up",methods=['GET','POST'])
 def sign_up():
@@ -65,9 +59,7 @@ def sign_up():
         db.session.commit()
         flash("account is created please submit credentials")
         return redirect(url_for('sign_in'))
-
     return render_template("sign_up.html",form=form)
-
 
 @app.route("/login",methods=['GET','POST'])
 def login():
@@ -86,14 +78,10 @@ def login():
     else:
         return render_template('sign_in.html',forms=forms)
 
-
-
 @app.route("/logout")
 def logout():
     logout_user()
     return redirect(url_for('main'))
-
-
 
 
 @app.route("/profile",methods=['GET','POST'])
@@ -119,7 +107,6 @@ def profile():
     image_file=url_for('static',filename='images/'+current_user.image_file)
     return render_template('profile.html',image_file=image_file,form=form)
 
-
 @app.route("/post",methods=["GET","POST"])
 def post():
     form=post_form()
@@ -140,13 +127,10 @@ def post():
     return render_template("post.html",form=form)
 
 
-
 @app.route("/userposts/<int:id>")
 def userposts(id):
     post=posts.query.get_or_404(id)
     return render_template('userposts.html',post=post)
-
-
 
 @app.route("/userposts/<int:id>/update",methods=['GET','POST'])
 @login_required
@@ -173,7 +157,6 @@ def update_post(id):
     return render_template('post.html',form=form)
 
 
-
 @app.route("/userposts/<int:id>/delete",methods=["GET","POST"])
 @login_required
 def delete_post(id):
@@ -185,12 +168,10 @@ def delete_post(id):
     return redirect(url_for('main'))
     
 
-
 @app.route("/login_form")
 def login_form():
     form=resistration_form()
     return render_template("login_form.html",form=form)
-
 
 @app.route("/users/<int:id>")
 def users(id):

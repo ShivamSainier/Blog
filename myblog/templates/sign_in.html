@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<style>
+
+.container{background:#fff; border-radius: 10px; box-shadow:15px 20px 0px rgba(0,0,0,0.1);}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<section class="login-block">
+    <div class="container">
+	<div class="row">
+		<div class="col-md-12 login-sec">
+		    <h2 class="text-center">Login Now</h2>
+      <form method="post" action=" ">
+        {{forms.hidden_tag()}}
+        {% with msg=get_flashed_messages() %}
+        {% if msg %}
+        {% for m in msg %}
+            <p class="text-danger">{{m}}</p>
+            {% endfor%}
+        {% endif %}
+        {% endwith %}
+  <div class="form-group">
+
+    {{forms.username.label()}}
+    {% if forms.username.errors %}
+    {{forms.username(class="form-control is-invalid")}}
+    <div class="invalid-feedback">
+        {% for error in forms.username.errors %}
+            <span>{{error}}</span>
+        {% endfor %}
+    </div>
+    {% else %}
+        {{forms.username(class='form-control form-control-sm')}}
+    {% endif %}
+    
+  </div>
+  <div class="form-group">
+    {{forms.password.label()}}
+    {{forms.password(class="form-control form-control-sm")}}
+
+  </div>
+
+  
+  <div class="form-group">
+    {{forms.submit(class="btn btn-primary form-control form-control-lg")}}
+  </div>
+  <div class="form-group">
+    <a class="btn btn-outline-primary form-control" href="{{url_for('sign_up')}}">Sign up</a>
+  </div>
+</section>
+  {% endblock %}

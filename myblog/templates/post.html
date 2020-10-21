@@ -2,17 +2,16 @@
 {% block head %}
 <style>
     body{
-    background:linear-gradient(to left, #000428 , #004e92);
-    font-family:serif;
-    font-size: 20px;
+    background:linear-gradient(to left, #FFFFFF , #D7E1EC);
+    font-family:'Times New Roman', Times, serif;
     }
 </style>
 {% endblock %}
 {% block content %}
-<div class="container bg-light p-2 rounded">
-<h2>posts</h2>
+<div class="container bg-light p-2 rounded mt-2">
+<h2> Posts</h2>
 
-<section class="section">
+<section class="section p-2">
     <div class="content">
 <form method="post" action="" enctype="multipart/form-data">
     {{form.hidden_tag()}}
@@ -29,7 +28,7 @@
         {{form.picture()}}
     </div>
     <div class="form-group" id="submit">
-        {{form.submit(class="btn btn-success")}}
+        {{form.submit(class="btn btn-success form-control")}}
     </div>
 </form>
 </div>

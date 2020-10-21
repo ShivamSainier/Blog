@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<style>
+.container{background:#fff; border-radius: 10px; box-shadow:15px 20px 0px rgba(0,0,0,0.1);}
+
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<section class="login-block">
+    <div class="container">
+	<div class="row">
+		<div class="col-md-12 login-sec">
+		    <h2 class="text-center">Resister here</h2>
+      <form method="post" action=" ">
+        {{form.hidden_tag()}}
+        {% with msg=get_flashed_messages() %}
+        {% if msg %}
+            {% for m in msg %}
+            <p class="text-danger">{{m}}</p>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <div class="form-group">
+            {{form.username.label()}}
+            {% if form.username.errors %}
+            {{form.username(class="form-control is-invalid")}}
+            <div class="invalid-feedback">
+                {% for error in form.username.errors %}
+                    <span>{{error}}</span>
+                {% endfor %}
+            </div>
+            {% else %}
+                {{form.username(class='form-control')}}
+            {% endif %}
+            </div>
+            <div class="form-group">
+                {{form.email.label(class="form-control-label")}}
+                {% if form.email.errors %}
+                {{form.email(class="form-control is-invalid")}}
+                <div class="invalid-feedback">
+                    {% for error in form.email.errors %}
+                        <span>{{error}}</span>
+                    {% endfor %}
+                </div>
+               {% else %}
+                {{form.email(class="form-control")}}
+                {% endif %}
+            </div>
+           <div class="form-group">
+            {{form.password.label()}}
+            {% if form.password.errors %}
+            {{form.password(class="form-control is-invalid " )}}
+            <div class="invalid-feedback">
+                {% for error in form.password.errors %}
+                    <span>{{error}}</span>
+                {% endfor %}
+            </div>
+            {% else %}
+            {{form.password(class="form-control")}}
+            {% endif %}
+            </div>
+           <div class="form-group">
+            {{form.confirm_password.label()}}
+            {% if form.confirm_password.errors %}
+            {{form.confirm_password(class="form-control is-invalid")}}
+            <div class="invalid-feedback">
+                {% for error in form.confirm_password.errors %}
+                    <span>{{error}}</span>
+                {% endfor %}
+            </div>
+            {% else %}
+            {{form.confirm_password(class="form-control")}}
+            {% endif %}
+            </div>
+            <div class="form-group">
+                {{form.submit(class="btn btn-primary form-control form-control-lg")}}                
+            </div>
+            <div class="form-group">
+                <a href="{{url_for('login')}}" class="btn btn-sm btn-outline-primary form-control form-control-lg">login</a>      
+            </div>
+            </form>
+</div>
+</div>
+</div>
+
+
+</section>
+  {% endblock %}

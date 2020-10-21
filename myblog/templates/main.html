@@ -1,0 +1,173 @@
+<!-- Extend base html file -->
+{% extends 'base.html' %}
+<!-- Head block -->
+{% block head %}
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <style>
+    body{
+    background:linear-gradient(to left, #FFFFFF , #D7E1EC);}
+
+
+  /* SCROLL ANIMATIONS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+  .scroll .hero {
+    transform: scale(0.98);}
+
+  /* BANNER SECTION
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+  .hero {
+    background-attachment: fixed;
+    transition: transform 0.5s ease-in-out;}
+
+  .hero::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(
+      rgba(0, 0, 0, 0.5) 0,
+      rgba(0, 0, 0, 0.3) 50%,
+      rgba(0, 0, 0, 0.1) 100%
+    );}
+
+  .hero .container-fluid {
+    z-index: 10;}
+
+  .article-img{
+      width:100%;}
+
+  /* MEDIA QUERIES
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+  /* MEDIUM SCREENS */
+  @media screen and (max-width: 991px) {
+    .page-header {
+      background: var(--red);
+    }
+  }
+  /* SMALL SCREENS */
+  @media screen and (max-width: 767px) {
+    .page-footer .footer-child {
+      text-align: center;
+    }
+    .article-img{
+        width:100%;
+        height:90%;
+    }
+
+    #title{
+      font-weight: bold;
+      font-size: 20px;
+      font-family: 'Times New Roman', Times, serif;
+      line-height: 22px;
+      color:dimgrey
+
+    }
+    #content{
+      font-weight:300;
+      font-size: 16px;
+      line-height: 20px;
+      font-family:sans-serif;
+
+    }}
+
+
+  </style>
+  <script>
+
+    const $body = $("body");
+    const $header = $(".page-header");
+    const $navCollapse = $(".navbar-collapse");
+    const scrollClass = "scroll";
+
+    $(window).on("scroll", () => {
+      if (this.matchMedia("(min-width: 992px)").matches) {
+        const scrollY = $(this).scrollTop();
+        scrollY > 0
+          ? $body.addClass(scrollClass)
+          : $body.removeClass(scrollClass);
+      } else {
+        $body.removeClass(scrollClass);
+      }
+    });
+
+    $(".page-header .nav-link, .navbar-brand").on("click", function(e) {
+      e.preventDefault();
+      const href = $(this).attr("href");
+      $("html, body").animate({
+        scrollTop: $(href).offset().top - 71
+      }, 600);
+    });
+    </script>
+
+{% endblock %}
+
+
+{% block content%}
+
+<!-- Body Block -->
+
+<div class="container">
+  {{forms.hidden_tag()}}
+  {% with msg=get_flashed_messages() %}
+    {% if msg %}
+      {% for m in msg %}
+        <p class="text-light">{{m}}</p>
+      {% endfor%}
+    {% endif %}
+  {% endwith %}
+<section id="home" class="d-flex align-items-center position-relative vh-100 cover hero" style="background-image:url(https://source.unsplash.com/user/erondu/1600x900); background-size: cover;background-repeat: no-repeat;">
+    <div class="container-fluid container-fluid-max">
+      <div class="row">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          
+          <div class="mt-3">
+            {% if current_user.is_authenticated %}
+          
+            <h1 class="text-light">{{current_user.username}}</h1>
+            {% else %}
+            <h1 class="text-white">My bLOG</h1>
+            <a class="btn bg-red text-white mr-2" href="{{url_for('login')}}" role="button">login</a>
+            <a class="btn bg-red text-white" href="{{url_for('resister')}}" role="button">resister now</a>
+          {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+<div class="p-2">
+  {% for p in post.items%}
+
+<div class="card mb-4">
+   <img class="card-img-top" src="{{url_for('static',filename='post_images/'+p.picture)}}" alt="Card image cap">
+   <div class="card-body">
+    <h2 class="card-title" id="title">{{p.title}}</h2>
+    <p class="card-text" id="content">{{p.content}}</p>
+    <a href="{{url_for('userposts',id=p.id)}}" class="btn btn-primary btn-sm">Read More →</a>
+  </div>
+  <div class="card-footer text-light bg-secondary">
+    Posted on : {{p.date_posted.strftime("%b-%d-%Y")}} By
+    <a href="#" class="text-danger">{{p.author.username}}</a>
+  </div>
+</div>
+{% endfor %}
+  </div>
+  <div class="section text-center">
+    {% for page_num in post.iter_pages() %}
+    {% if post.page==page_num %}
+    <a class="btn btn-secondary btn" href="{{url_for('main',page=page_num)}}">{{page_num}}</a>
+    {% else %}
+    <a class="btn btn-outline-secondary btn" href="{{url_for('main',page=page_num)}}">{{page_num}}</a>
+    {% endif %}
+    {% endfor %}
+    <hr class="primary p-2 mb-5">
+    </div>
+</div>
+</section>
+</div>
+
+{% endblock %}
